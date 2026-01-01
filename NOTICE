@@ -1,0 +1,6 @@
+safemath
+Copyright 2026 Dwi Siswanto
+
+This project is heaviliy inspired by Go-Panikint[1].
+
+[1]: https://github.com/trailofbits/go-panikint

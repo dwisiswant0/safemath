@@ -1,0 +1,22 @@
+name: tests
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "**.go"
+      - "**.mod"
+  pull_request:
+    paths:
+      - "**.go"
+      - "**.mod"
+  workflow_dispatch: {}
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: projectdiscovery/actions/setup/go@v1
+      - run: make tests
+      - run: make bench
