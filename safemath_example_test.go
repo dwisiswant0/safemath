@@ -104,6 +104,25 @@ func ExampleConvert() {
 	// integer type truncation
 }
 
+func ExampleConvertAny() {
+	// Convert from interface{} holding an int64
+	var v any = int64(42)
+	res, err := safemath.ConvertAny[uint8](v)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(res)
+
+	// Non-integer input is rejected
+	_, err = safemath.ConvertAny[int]("nope")
+	if err != nil {
+		fmt.Println(err)
+	}
+	// Output:
+	// 42
+	// invalid integer type
+}
+
 func ExampleMustAdd() {
 	// MustAdd succeeds
 	fmt.Println(safemath.MustAdd(100, 200))
@@ -137,6 +156,24 @@ func ExampleMustConvert() {
 	// Output:
 	// 10000
 	// Recovered from: integer type truncation
+}
+
+func ExampleMustConvertAny() {
+	// MustConvertAny succeeds when the interface holds an integer
+	var v any = uint32(255)
+	fmt.Println(safemath.MustConvertAny[uint8](v))
+
+	// MustConvertAny panics on invalid type
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from:", r)
+		}
+	}()
+	safemath.MustConvertAny[int]("bad")
+
+	// Output:
+	// 255
+	// Recovered from: invalid integer type
 }
 
 func ExampleMustSub() {

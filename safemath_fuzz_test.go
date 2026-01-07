@@ -112,3 +112,25 @@ func FuzzConvertUnsignedToUnsignedSmall(f *testing.F) {
 		checkConsistency(t, res, err, func() uint8 { return safemath.MustConvert[uint8](a) })
 	})
 }
+
+// FuzzConvertAny covers the interface-based conversion path.
+func FuzzConvertAnyInt64ToUint8(f *testing.F) {
+	f.Add(int64(100))
+	f.Add(int64(-1))
+	f.Add(int64(300))
+
+	f.Fuzz(func(t *testing.T, a int64) {
+		res, err := safemath.ConvertAny[uint8](a)
+		checkConsistency(t, res, err, func() uint8 { return safemath.MustConvertAny[uint8](a) })
+	})
+}
+
+func FuzzConvertAnyUint64ToInt64(f *testing.F) {
+	f.Add(uint64(1))
+	f.Add(uint64(1) << 63)
+
+	f.Fuzz(func(t *testing.T, a uint64) {
+		res, err := safemath.ConvertAny[int64](a)
+		checkConsistency(t, res, err, func() int64 { return safemath.MustConvertAny[int64](a) })
+	})
+}

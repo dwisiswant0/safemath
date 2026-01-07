@@ -11,7 +11,7 @@ It provides overflow-safe arithmetic (`+`, `-`, `*`, `/`) and safe type conversi
 
 * **Comprehensive generics**: works with all standard integer types.
 * **Checked arithmetic**: [`Add`](https://pkg.go.dev/go.dw1.io/safemath#Add), [`Sub`](https://pkg.go.dev/go.dw1.io/safemath#Sub), [`Mul`](https://pkg.go.dev/go.dw1.io/safemath#Mul), [`Div`](https://pkg.go.dev/go.dw1.io/safemath#Div) functions return an error instead of allowing silent, dangerous wrapping.
-* **Safe conversions**: [`Convert[To, From](v)`](https://pkg.go.dev/go.dw1.io/safemath#Convert) makes sure no data is lost during type conversion (e.g., checking bounds when casting larger types to smaller ones or signed to unsigned).
+* **Safe conversions**: [`Convert[To, From](v)`](https://pkg.go.dev/go.dw1.io/safemath#Convert) makes sure no data is lost during type conversion (e.g., checking bounds when casting larger types to smaller ones or signed to unsigned). [`ConvertAny`](https://pkg.go.dev/go.dw1.io/safemath#ConvertAny) extends the checks to `any` values, rejecting non-integer inputs.
 * **Panic APIs**: [`Must*`](https://pkg.go.dev/go.dw1.io/safemath#MustAdd) variants are available for situations where panicking on failure is preferred.
 * **Adversarial safety**: robustly handles dangerous edge cases like $$MinInt / -1$$ and avoids hardware exceptions.
 
@@ -54,6 +54,20 @@ func main() {
 
     fmt.Println("Product:", prod)
 }
+```
+
+### Converting from interface{}
+
+```go
+val := any(int64(42))
+out, err := safemath.ConvertAny[uint16](val)
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(out)
+
+// Will panic (ErrInvalidType) because input is not an integer
+// _ = safemath.MustConvertAny[uint16]("nope")
 ```
 
 ### Safe Conversion
