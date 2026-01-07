@@ -123,6 +123,38 @@ func Convert[To, From Integer](v From) (To, error) {
 	return to, nil
 }
 
+// ConvertAny attempts to convert v (any integer type) into To.
+//
+// Returns ErrInvalidType when v is not an integer or cannot fit in To.
+func ConvertAny[To Integer](v any) (To, error) {
+	switch x := v.(type) {
+	case int:
+		return Convert[To](x)
+	case int8:
+		return Convert[To](x)
+	case int16:
+		return Convert[To](x)
+	case int32:
+		return Convert[To](x)
+	case int64:
+		return Convert[To](x)
+	case uint:
+		return Convert[To](x)
+	case uint8:
+		return Convert[To](x)
+	case uint16:
+		return Convert[To](x)
+	case uint32:
+		return Convert[To](x)
+	case uint64:
+		return Convert[To](x)
+	case uintptr:
+		return Convert[To](x)
+	default:
+		return 0, ErrInvalidType
+	}
+}
+
 // MustAdd returns the sum of a and b on success. Panics on error.
 func MustAdd[T Integer](a, b T) T {
 	c, err := Add(a, b)
@@ -166,6 +198,16 @@ func MustDiv[T Integer](a, b T) T {
 // MustConvert safely converts a value from one Integer type to another on success. Panics on error.
 func MustConvert[To, From Integer](v From) To {
 	c, err := Convert[To](v)
+	if err != nil {
+		panic(err)
+	}
+
+	return c
+}
+
+// MustConvertAny converts v (any integer type) into To or panics on error.
+func MustConvertAny[To Integer](v any) To {
+	c, err := ConvertAny[To](v)
 	if err != nil {
 		panic(err)
 	}

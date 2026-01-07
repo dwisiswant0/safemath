@@ -464,3 +464,56 @@ func TestMust(t *testing.T) {
 		safemath.MustConvert[int8](128)
 	})
 }
+
+func TestConvertAny(t *testing.T) {
+	tests := []struct {
+		name string
+		val  any
+		want uint8
+		err  error
+	}{
+		{name: "int to uint8", val: int(10), want: uint8(10), err: nil},
+		{name: "uint8 to uint8", val: uint8(5), want: uint8(5), err: nil},
+		{name: "overflow", val: uint16(256), want: 0, err: safemath.ErrTruncation},
+		{name: "non-integer", val: 1.5, want: 0, err: safemath.ErrInvalidType},
+		{name: "nil", val: nil, want: 0, err: safemath.ErrInvalidType},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := safemath.ConvertAny[uint8](tt.val)
+			if err != tt.err {
+				t.Fatalf("error = %v, want %v", err, tt.err)
+			}
+			if tt.err == nil && got != tt.want {
+				t.Fatalf("got %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMustConvertAny(t *testing.T) {
+	t.Run("success", func(t *testing.T) {
+		if got := safemath.MustConvertAny[uint8](int(7)); got != 7 {
+			t.Fatalf("MustConvertAny returned %v, want 7", got)
+		}
+	})
+
+	t.Run("panic on truncation", func(t *testing.T) {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Fatal("MustConvertAny did not panic")
+			}
+		}()
+		safemath.MustConvertAny[uint8](uint16(256))
+	})
+
+	t.Run("panic on non-integer", func(t *testing.T) {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Fatal("MustConvertAny did not panic for non-integer")
+			}
+		}()
+		safemath.MustConvertAny[uint8](1.5)
+	})
+}

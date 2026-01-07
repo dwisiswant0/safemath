@@ -10,5 +10,7 @@
 //
 // For type conversions, [Convert] ensures that the value can be represented
 // in the target type without data loss, handling both signed-to-unsigned and
-// size-based truncation checks.
+// size-based truncation checks. When the source value is only available as
+// an interface, [ConvertAny] (and [MustConvertAny]) perform the same checks
+// while also rejecting non-integer inputs.
 package safemath

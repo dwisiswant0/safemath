@@ -163,3 +163,19 @@ func BenchmarkMustConvert(b *testing.B) {
 	}
 	_ = res
 }
+
+func BenchmarkConvertAny(b *testing.B) {
+	var res uint8
+	for i := 0; i < b.N; i++ {
+		res, _ = safemath.ConvertAny[uint8](int64(i % 127))
+	}
+	_ = res
+}
+
+func BenchmarkMustConvertAny(b *testing.B) {
+	var res uint8
+	for i := 0; i < b.N; i++ {
+		res = safemath.MustConvertAny[uint8](int64(i % 127))
+	}
+	_ = res
+}
