@@ -10,7 +10,7 @@ import (
 
 func BenchmarkAdd(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = int64(i) + int64(i)
 	}
 	_ = res
@@ -18,7 +18,7 @@ func BenchmarkAdd(b *testing.B) {
 
 func BenchmarkMul(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = int64(i) * int64(i)
 	}
 	_ = res
@@ -26,7 +26,7 @@ func BenchmarkMul(b *testing.B) {
 
 func BenchmarkDiv(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = int64(i) / 1
 	}
 	_ = res
@@ -36,7 +36,7 @@ func BenchmarkDiv(b *testing.B) {
 
 func BenchmarkAddInt64(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Add(int64(i), int64(i))
 	}
 	_ = res
@@ -44,7 +44,7 @@ func BenchmarkAddInt64(b *testing.B) {
 
 func BenchmarkAddUint64(b *testing.B) {
 	var res uint64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Add(uint64(i), uint64(i))
 	}
 	_ = res
@@ -52,7 +52,7 @@ func BenchmarkAddUint64(b *testing.B) {
 
 func BenchmarkMustAdd(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = safemath.MustAdd(int64(i), int64(i))
 	}
 	_ = res
@@ -60,7 +60,7 @@ func BenchmarkMustAdd(b *testing.B) {
 
 func BenchmarkSubInt64(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Sub(int64(i), int64(i))
 	}
 	_ = res
@@ -68,7 +68,7 @@ func BenchmarkSubInt64(b *testing.B) {
 
 func BenchmarkSubUint64(b *testing.B) {
 	var res uint64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Sub(uint64(i), uint64(i))
 	}
 	_ = res
@@ -76,7 +76,7 @@ func BenchmarkSubUint64(b *testing.B) {
 
 func BenchmarkMustSub(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = safemath.MustSub(int64(i), int64(i))
 	}
 	_ = res
@@ -84,7 +84,7 @@ func BenchmarkMustSub(b *testing.B) {
 
 func BenchmarkMulInt64(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Mul(int64(i), int64(i))
 	}
 	_ = res
@@ -92,7 +92,7 @@ func BenchmarkMulInt64(b *testing.B) {
 
 func BenchmarkMulUint64(b *testing.B) {
 	var res uint64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Mul(uint64(i), uint64(i))
 	}
 	_ = res
@@ -100,7 +100,7 @@ func BenchmarkMulUint64(b *testing.B) {
 
 func BenchmarkMustMul(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = safemath.MustMul(int64(i), int64(i))
 	}
 	_ = res
@@ -108,7 +108,7 @@ func BenchmarkMustMul(b *testing.B) {
 
 func BenchmarkDivInt64(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Div(int64(i), int64(1))
 	}
 	_ = res
@@ -116,7 +116,7 @@ func BenchmarkDivInt64(b *testing.B) {
 
 func BenchmarkDivUint64(b *testing.B) {
 	var res uint64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Div(uint64(i), uint64(1))
 	}
 	_ = res
@@ -124,7 +124,7 @@ func BenchmarkDivUint64(b *testing.B) {
 
 func BenchmarkMustDiv(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = safemath.MustDiv(int64(i), int64(1))
 	}
 	_ = res
@@ -134,7 +134,7 @@ func BenchmarkMustDiv(b *testing.B) {
 
 func BenchmarkConvertSignedToInt8(b *testing.B) {
 	var res int8
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Convert[int8](int64(i % 127))
 	}
 	_ = res
@@ -142,7 +142,7 @@ func BenchmarkConvertSignedToInt8(b *testing.B) {
 
 func BenchmarkConvertSignedToUint64(b *testing.B) {
 	var res uint64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Convert[uint64](int64(i))
 	}
 	_ = res
@@ -150,7 +150,7 @@ func BenchmarkConvertSignedToUint64(b *testing.B) {
 
 func BenchmarkConvertUnsignedToSigned(b *testing.B) {
 	var res int64
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res, _ = safemath.Convert[int64](uint64(i))
 	}
 	_ = res
@@ -158,7 +158,7 @@ func BenchmarkConvertUnsignedToSigned(b *testing.B) {
 
 func BenchmarkMustConvert(b *testing.B) {
 	var res int8
-	for i := 0; b.Loop(); i++ {
+	for i := 0; i < b.N; i++ {
 		res = safemath.MustConvert[int8](int64(i % 127))
 	}
 	_ = res
